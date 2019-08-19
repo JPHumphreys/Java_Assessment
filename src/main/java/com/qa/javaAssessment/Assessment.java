@@ -1,4 +1,4 @@
-﻿package com.qa.javaAssessment;
+package com.qa.javaAssessment;
 
 public class Assessment {
 
@@ -33,38 +33,26 @@ public class Assessment {
 
 	public String getBert(String input) {
 		
-		String returnString = "";
-		int instancesOfBert = 0;
-		int inBetweenBertIndex = 0;
+		String returnSentance = "";
 		String bert = "bert";
-		input.toLowerCase();//fixes case issue
 		
-		for(int i = 0; i < input.length(); i++)
+		String inputToLower = input.toLowerCase();
+		
+		int bert0 = inputToLower.indexOf("bert");
+		int bert1 = inputToLower.lastIndexOf("bert");
+		
+		if(bert0 != -1 && bert1 != -1)//both exist
 		{
-			if(input.substring(i, i + bert.length()).equals(bert))
+			for(int i = bert0 + bert.length(); i <= bert1 -1; i++ )
 			{
-				//checks to see if there is an instance of bert
-				instancesOfBert++;
-				//saves the index of the end of bert
-				inBetweenBertIndex = i + bert.length() + 1;
-				//
+				returnSentance += input.subSequence(i, i + 1);
 			}
-			else if(inBetweenBertIndex >= i)
-			{
-				returnString += input.subSequence(i, i + 1);
-			}
-			
-			
 		}
 		
-		if(instancesOfBert == 2)
-		{
-			return returnString;
-		}
-		else
-		{
-			return "";
-		}
+		String finalString = new StringBuilder(returnSentance).reverse().toString();
+		
+		
+		return finalString;
 	}
 
 	// Given three ints, a b c, one of them is small, one is medium and one is
@@ -104,22 +92,26 @@ public class Assessment {
 	public String nMid(String input, int a) {
 		
 		String returnString = "";
-		int middle = (input.length() / 2) - 1;
-		int b = (a + 1)/2;
+		int middle = input.length() / 2;
+		
+		if(a == 1)
+		{
+			a = 0;
+		}
+		else
+		{
+			a -= 2;
+		}
+		
+		//System.out.println( "middle value is : " + middle);
+		//System.out.println( "a value is : " + a);
 		
 		for(int i = 0; i < input.length(); i++)
 		{
-			if( i <= middle - b || i > middle + b)
-			{
-				returnString += input.substring(i, i + 1);
-			}
-			else
-			{
-				
+			if(i < (middle - a) || i > (middle + a)) {
+				returnString += input.subSequence(i, i + 1);
 			}
 		}
-		
-		
 		
 		return returnString;
 	}
@@ -175,36 +167,31 @@ public class Assessment {
 		
 		for(int i = 0; i < newString.length(); i++)
 		{
-			if(i < newString.length() - 3)
+			
+			if(i == 0)
 			{
-				if(newString.substring(i, i + am.length()).equals(am))
+				if(newString.substring(i, i + am.length()).equals(am) && newString.substring(i + am.length(), i + am.length() + 1).equals(" "))
 				{
-					//is am
-					if(newString.substring(i, i + (am.length() + 1)).equals(" "))
+					//System.out.println("hits this");
+					counter++;
+				}
+			}
+			else if(i > 0)
+			{
+				if(i < newString.length() - 3)
+				{
+					if(newString.substring(i, i + am.length()).equals(am) && newString.substring(i + am.length(), i + am.length() + 1).equals(" ") && newString.substring(i - 1, i).equals(" "))
 					{
-						System.out.println("hits");//not hitting this why??
-						//nothing after
-						if( i > 1)
-							{
-								if(newString.substring(i - 1, i).equals(" "))
-								{
-									//not surrounded
-									System.out.println("huits");
-									counter++;
-								}
-							}
-						else
-						{
-							//at start
-							counter++;
-						}
+						//System.out.println("hits this");
+						counter++;
 					}
 				}
 			}
-			else 
+			else
 			{
-				//out of range
+				System.out.println("shouldnt hit this");
 			}
+			
 		}
 		
 		return counter;
@@ -322,3 +309,4 @@ public class Assessment {
 		return currentHighest;
 	}
 }
+
